@@ -1,4 +1,4 @@
-"""Draws Figure 5 and the supplementary figures from results_pub.json into figures/pub/. Run: python make_pubfigs_plot.py"""
+"""Draws Figure 5 and the supplementary figures from results_pub.json into figures/. Run: python make_pubfigs_plot.py"""
 import json, os
 import numpy as np
 import matplotlib
@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec, GridSpecFromSubplotSpec
 
 R = json.load(open('results_pub.json'))
-os.makedirs('figures/pub', exist_ok=True)
+os.makedirs('figures', exist_ok=True)
 plt.rcParams.update({'font.family': ['Arial', 'Helvetica', 'DejaVu Sans'], 'font.size': 7.5, 'axes.linewidth': 0.7,
                      'axes.spines.top': False, 'axes.spines.right': False, 'xtick.major.width': 0.7, 'ytick.major.width': 0.7,
                      'xtick.major.size': 3, 'ytick.major.size': 3, 'legend.frameon': False})
@@ -117,13 +117,19 @@ ax.set_ylabel('spike rate (Hz)'); ax.legend(loc='upper left', fontsize=6, bbox_t
 ax.set_ylim(0, max(max(det), max(np.array(stm) + np.array(sts))) * 1.45)
 ax.set_title('Perturbations move the cell\nin the expected direction', fontsize=7.5)
 
-fig.savefig('figures/pub/Fig5_PoC_human_beta_cell.png', dpi=300)
-fig.savefig('figures/pub/Fig5_PoC_human_beta_cell.pdf')
+fig.savefig('figures/Figure_5.png', dpi=300)
+fig.savefig('figures/Figure_5.pdf')
 plt.close(fig)
 
 # ------------------------------------------------------------------ supplementary figures
+# Only the figures shown in the Supplementary Material are saved, with the names used there.
+SHOWN = {'FigS2_scheme_calibration': 'Supplementary_Figure_2', 'FigS5_channel_kinetics': 'Supplementary_Figure_3'}
+
+
 def save(fig, name):
-    fig.savefig(f'figures/pub/{name}.png', dpi=200); plt.close(fig)
+    if name in SHOWN:
+        fig.savefig(f'figures/{SHOWN[name]}.png', dpi=200)
+    plt.close(fig)
 
 # S1 implementation check
 fig, ax = plt.subplots(1, 1, figsize=(3.6, 2.8))
@@ -191,4 +197,4 @@ for k, p in enumerate(P):
 ax[0, 0].set_title('deterministic embedding', fontsize=8); ax[0, 1].set_title('stochastic embedding (N·$\\mathrm{P_O}$ ≈ 2–3)', fontsize=8)
 ax[-1, 0].set_xlabel('time (s)'); ax[-1, 1].set_xlabel('time (s)')
 fig.tight_layout(); save(fig, 'FigS6_perturbation_traces')
-print('figures written:', sorted(os.listdir('figures/pub')))
+print('figures written:', sorted(f for f in os.listdir('figures') if f.endswith(('.png', '.pdf'))))

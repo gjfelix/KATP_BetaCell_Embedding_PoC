@@ -1,5 +1,5 @@
-"""Supplementary Figure 7: kinetic diagram of the reduced KATP scheme and its correspondence with Figure 3 of the paper.
-Run: python make_scheme_diagram.py  ->  figures/pub/FigS7_scheme_diagram.png"""
+"""Supplementary Figure 1: kinetic diagram of the reduced KATP scheme and its correspondence with Figure 3 of the paper.
+Run: python make_scheme_diagram.py  ->  figures/Supplementary_Figure_1.png"""
 import os
 import matplotlib
 matplotlib.use('Agg')
@@ -91,6 +91,6 @@ ax.text(2, y - 1.0,
         'does not represent as states and reproduces only through one parameter. Figure 3 states that the relation between O$_{NBD}$\n'
         'and O$_{PIP2}$ is not established; the scheme does not distinguish them. Nothing in this correspondence is derived from structures.',
         fontsize=7.3, color=GREY, va='top', linespacing=1.3)
-os.makedirs('figures/pub', exist_ok=True)
-fig.savefig('figures/pub/FigS7_scheme_diagram.png', dpi=300)
+os.makedirs('figures', exist_ok=True)
+fig.savefig('figures/Supplementary_Figure_1.png', dpi=300)
 print('saved')

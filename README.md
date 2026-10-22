@@ -22,45 +22,69 @@ above about 0.02 nS/pF.
 MgADP is assumed to act by shifting the closed/open equilibrium (see Enkvetchakul and Nichols, 2003). The open probability is
 
 $$
-P_\mathrm{O} = \frac{1}{1 + L_\mathrm{eff}\left[\dfrac{1 + [\mathrm{ATP}]/K_\mathrm{C}}{1 + [\mathrm{ATP}]/K_\mathrm{O}}\right]^{4}},
+P_{\mathrm{O}} = \frac{1}{1 + L_{\mathrm{eff}}\left[\dfrac{1 + [\mathrm{ATP}]/K_{\mathrm{C}}}{1 + [\mathrm{ATP}]/K_{\mathrm{O}}}\right]^{4}},
 \qquad
-L_\mathrm{eff} = \frac{L}{1 + [\mathrm{MgADP}]/K_\mathrm{D}},
-\qquad K_\mathrm{O} > K_\mathrm{C},
+L_{\mathrm{eff}} = \frac{L}{1 + [\mathrm{MgADP}]/K_{\mathrm{D}}},
+\qquad K_{\mathrm{O}} > K_{\mathrm{C}},
 $$
 
-where $L$ is the closed/open equilibrium without ligands, $K_\mathrm{C}$ and $K_\mathrm{O}$ are the ATP dissociation constants
-of the closed and open conformations, and $K_\mathrm{D}$ describes the activation by MgADP.
+where $L$ is the closed/open equilibrium without ligands, $K_{\mathrm{C}}$ and $K_{\mathrm{O}}$ are the ATP dissociation constants
+of the closed and open conformations, and $K_{\mathrm{D}}$ describes the activation by MgADP.
 
-In the cell, each channel is a two-state system with relaxation time $\tau_\mathrm{ch}$:
+In the cell, each channel is a two-state system with relaxation time $\tau_{\mathrm{ch}}$:
 
 $$
-k_\mathrm{c} = \frac{1}{\tau_\mathrm{ch}}, \qquad k_\mathrm{o} = k_\mathrm{c}\,\frac{P_\mathrm{O}}{1 - P_\mathrm{O}} .
+k_{\mathrm{c}} = \frac{1}{\tau_{\mathrm{ch}}}, \qquad k_{\mathrm{o}} = k_{\mathrm{c}}\,\frac{P_{\mathrm{O}}}{1 - P_{\mathrm{O}}} .
 $$
 
-The cell has $N$ channels of conductance $\gamma$, so the mean KATP conductance is $N\,\gamma\,P_\mathrm{O}$. Two
+The cell has $N$ channels of conductance $\gamma$, so the mean KATP conductance is $N\,\gamma\,P_{\mathrm{O}}$. Two
 versions are run:
 
-* **Deterministic embedding:** the open fraction $P$ follows $\dfrac{dP}{dt} = k_\mathrm{o}(1-P) - k_\mathrm{c}P$.
+* **Deterministic embedding:** the open fraction $P$ follows $\dfrac{dP}{dt} = k_{\mathrm{o}}(1-P) - k_{\mathrm{c}}P$.
 * **Stochastic embedding:** at each time step, the number of open channels changes by two binomial draws (closing of the open
-  channels with probability $k_\mathrm{c}\,dt$, opening of the closed channels with probability $k_\mathrm{o}\,dt$).
+  channels with probability $k_{\mathrm{c}}\,dt$, opening of the closed channels with probability $k_{\mathrm{o}}\,dt$).
 
 **Input.** The nucleotide ratio $a = \mathrm{ADP}/\mathrm{ATP}$ is fixed in each simulation, with
 $\mathrm{ATP} = \mathrm{Tot}/(1+a)$, $\mathrm{ADP} = \mathrm{Tot}\,a/(1+a)$ and $\mathrm{Tot} = 5$ mM (assumed). To compare
 with the original model, we take its conductance to be proportional to $a$ and equal to the file value at $a = 0.5$:
 
 $$
-g_\mathrm{KATP}(a) = 0.015\ \mathrm{nS/pF} \times \frac{a}{0.5}.
+g_{\mathrm{KATP}}(a) = 0.015\ \mathrm{nS/pF} \times \frac{a}{0.5}.
 $$
 
-**Calibration.** $L = 0.89$ (from $P_\mathrm{O,zero} = 0.53$) and the patch IC$_{50}$ of 7 µM come from data (Proks et al., 2004).
-$K_\mathrm{C}$ and $K_\mathrm{O}$ are fitted so that the scheme gives that IC$_{50}$ and so that the total conductance follows
-$N\gamma P_\mathrm{O}(a) = 297\ \mathrm{pS} \times a$ for $a$ between 0.40 and 0.90. $K_\mathrm{D} = 100$ µM is assumed.
-The result is $K_\mathrm{C} = 20.0$ µM, $K_\mathrm{O} = 382$ µM, a patch IC$_{50}$ of 7.1 µM, and $P_\mathrm{O}$ within 12 % of
-the reference line. The scheme is a bit less steep than the original model: the elasticity
-$d\ln P_\mathrm{O}/d\ln a$ is 0.76 at $a = 0.5$, against 1. We also tried fitting $K_\mathrm{D}$; it follows the line more
-closely but needs $K_\mathrm{D} = 3.8$ µM, which is lower than usual values for MgADP, so we did not use it.
+**Calibration.** Two numbers come from data (Proks et al., 2004): the closed/open equilibrium without ligands, from the
+open probability without ligands $P_{\mathrm{O,zero}} = 0.53$,
 
-**Perturbations.** R201H-like: $K_\mathrm{C}$ and $K_\mathrm{O}$ multiplied by 298/7 (Proks et al., 2004). Q52R-like: $L$ divided
+$$
+L = \frac{1 - P_{\mathrm{O,zero}}}{P_{\mathrm{O,zero}}} = 0.89,
+$$
+
+and the ATP concentration that halves the open probability in an excised patch (ADP = 0), $\mathrm{IC}_{50} = 7$ µM.
+$K_{\mathrm{C}}$ and $K_{\mathrm{O}}$ are not measured separately, so they are fitted with two conditions. First, the scheme must
+give the patch $\mathrm{IC}_{50}$ above. Second, in the cell, the total conductance must follow the reference line for
+nucleotide ratios between 0.40 and 0.90:
+
+$$
+N\,\gamma\,P_{\mathrm{O}}(a) = 297\ \mathrm{pS} \times a .
+$$
+
+$K_{\mathrm{D}} = 100$ µM is assumed. The fit gives
+
+$$
+K_{\mathrm{C}} = 20.0\ \mu\mathrm{M}, \qquad K_{\mathrm{O}} = 382\ \mu\mathrm{M},
+$$
+
+with a patch $\mathrm{IC}_{50}$ of 7.1 µM and $P_{\mathrm{O}}$ within 12 % of the reference line. The scheme is a bit less steep
+than the original model; its elasticity at $a = 0.5$ is
+
+$$
+\frac{d\ln P_{\mathrm{O}}}{d\ln a} = 0.76 ,
+$$
+
+against 1 for the original model. We also tried fitting $K_{\mathrm{D}}$ too. It follows the line more closely but needs
+$K_{\mathrm{D}} = 3.8$ µM, which is lower than usual values for MgADP, so we did not use it.
+
+**Perturbations.** R201H-like: $K_{\mathrm{C}}$ and $K_{\mathrm{O}}$ multiplied by 298/7 (Proks et al., 2004). Q52R-like: $L$ divided
 by 4. PIP₂ depletion: $L$ multiplied by 4. Sulfonylurea: 90 % of the channels unavailable. The last three are assumptions.
 
 ## What is in the repository
@@ -68,19 +92,19 @@ by 4. PIP₂ depletion: $L$ multiplied by 4. Sulfonylurea: 90 % of the channels 
 | File | What it does |
 |---|---|
 | `human_poc.py` | The Pedersen model in Python, with three modes: original, deterministic embedding and stochastic embedding |
-| `katp_scheme.py` | The channel scheme, the patch IC$_{50}$, the calibration and the elasticity |
+| `katp_scheme.py` | The channel scheme, the patch $\mathrm{IC}_{50}$, the calibration and the elasticity |
 | `analysis_h.py` | Spike statistics: rate, CV of the inter-spike intervals, mean potential, mean number of open channels |
 | `make_pubfigs_compute.py` | Runs all the simulations of the article and writes `results_pub.json` |
 | `make_pubfigs_extra.py` | Adds the deterministic spike rate for each single-channel conductance to `results_pub.json` |
-| `make_pubfigs_plot.py` | Draws Figure 5 and the supplementary figures from `results_pub.json` into `figures/pub/` |
+| `make_pubfigs_plot.py` | Draws Figure 5 and the supplementary figures from `results_pub.json` into `figures/` |
 | `make_scheme_diagram.py` | Draws the kinetic diagram of the scheme (Supplementary Figure 1) |
 | `check_numerics.py`, `numerics_check.json` | Checks the Python implementation against an independent integration |
 | `results_pub.json` | The results used in the article, so the figures can be redrawn without rerunning anything |
 | `environment.yml` | Conda environment |
 
-The figures are not stored here; the plotting scripts create them in `figures/pub/`. The file names are internal. In the
-article, Supplementary Figure 1 is `FigS7_scheme_diagram.png`, Supplementary Figure 2 is `FigS2_scheme_calibration.png`,
-Supplementary Figure 3 is `FigS5_channel_kinetics.png`, and Figure 5 is `Fig5_PoC_human_beta_cell.png`.
+The figures are not stored in the repository. The plotting scripts create them in a `figures/` folder, with the names used
+in the article: `Figure_5.png` (and `.pdf`), and `Supplementary_Figure_1.png`, `Supplementary_Figure_2.png` and
+`Supplementary_Figure_3.png`.
 
 ## Installation
 
@@ -130,7 +154,7 @@ python make_scheme_diagram.py
 python check_numerics.py
 ```
 
-For the original model with $g_\mathrm{KATP} = 0.015$ nS/pF, all the integrations should give a spike rate of 4.6 Hz and a first
+For the original model with $g_{\mathrm{KATP}} = 0.015$ nS/pF, all the integrations should give a spike rate of 4.6 Hz and a first
 inter-spike interval of 0.216 s. The results are saved in `numerics_check.json`.
 
 **3. Check the calibration of the scheme (a few seconds).**
@@ -139,7 +163,7 @@ inter-spike interval of 0.216 s. The results are saved in `numerics_check.json`.
 python -c "import make_pubfigs_compute as C, katp_scheme as kp; c = C.cal(70.0, 'A'); print(c['KC'], c['KO'], c['ic50'], kp.elasticity(c))"
 ```
 
-You should get $K_\mathrm{C} = 20.0$ µM, $K_\mathrm{O} = 382$ µM, an IC$_{50}$ of 7.1 µM and an elasticity of 0.76.
+You should get $K_{\mathrm{C}} = 20.0$ µM, $K_{\mathrm{O}} = 382$ µM, an $\mathrm{IC}_{50}$ of 7.1 µM and an elasticity of 0.76.
 
 **4. Rerun all the simulations (about 11 minutes on one core).** This overwrites `results_pub.json`, so keep a copy if you
 want to compare.
@@ -156,14 +180,14 @@ other platforms or library versions the stochastic results may differ slightly.
 ## Using the scheme in your own model
 
 `katp_scheme.py` does not depend on the cell model. `po_of_a(a, L, KC, KO, KD, Tot)` gives the open probability for a
-nucleotide ratio `a` and an adenine pool `Tot` (µM), and `calibrate(N, gamma, ...)` gives $K_\mathrm{C}$ and $K_\mathrm{O}$ for a
+nucleotide ratio `a` and an adenine pool `Tot` (µM), and `calibrate(N, gamma, ...)` gives $K_{\mathrm{C}}$ and $K_{\mathrm{O}}$ for a
 number of channels and a single-channel conductance. `simulate_h` in `human_poc.py` runs the cell model.
 
 ## Limitations
 
-* The scheme describes equilibrium open probability only. The closing rate is $1/\tau_\mathrm{ch}$ with $\tau_\mathrm{ch}$ = 5 ms
+* The scheme describes equilibrium open probability only. The closing rate is $1/\tau_{\mathrm{ch}}$ with $\tau_{\mathrm{ch}}$ = 5 ms
   assumed, and the amount of noise-induced spiking depends on it (Supplementary Figure 3).
-* $K_\mathrm{C}$ and $K_\mathrm{O}$ are fitted to the same conductance against which the embedded model is then compared.
+* $K_{\mathrm{C}}$ and $K_{\mathrm{O}}$ are fitted to the same conductance against which the embedded model is then compared.
 * With $N = 10^4$ and $\gamma$ = 70 pS (close to the 64 pS measured in human β-cells; Ashcroft et al., 1987), there are only
   about 2–3 open channels at $a = 0.5$. The mean conductance is kept fixed when $\gamma$ is varied.
 
