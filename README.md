@@ -28,24 +28,24 @@ L_{\mathrm{eff}} = \frac{L}{1 + [\mathrm{MgADP}]/K_{\mathrm{D}}},
 \qquad K_{\mathrm{O}} > K_{\mathrm{C}},
 $$
 
-where $L$ is the closed/open equilibrium without ligands, $K_{\mathrm{C}}$ and $K_{\mathrm{O}}$ are the ATP dissociation constants
-of the closed and open conformations, and $K_{\mathrm{D}}$ describes the activation by MgADP.
+where $L$ is the closed/open equilibrium without ligands, $`K_{\mathrm{C}}`$ and $`K_{\mathrm{O}}`$ are the ATP dissociation constants
+of the closed and open conformations, and $`K_{\mathrm{D}}`$ describes the activation by MgADP.
 
-In the cell, each channel is a two-state system with relaxation time $\tau_{\mathrm{ch}}$:
+In the cell, each channel is a two-state system with relaxation time $`\tau_{\mathrm{ch}}`$:
 
 $$
 k_{\mathrm{c}} = \frac{1}{\tau_{\mathrm{ch}}}, \qquad k_{\mathrm{o}} = k_{\mathrm{c}}\,\frac{P_{\mathrm{O}}}{1 - P_{\mathrm{O}}} .
 $$
 
-The cell has $N$ channels of conductance $\gamma$, so the mean KATP conductance is $N\,\gamma\,P_{\mathrm{O}}$. Two
+The cell has $`N`$ channels of conductance $`\gamma`$, so the mean KATP conductance is $`N\,\gamma\,P_{\mathrm{O}}`$. Two
 versions are run:
 
-* **Deterministic embedding:** the open fraction $P$ follows $\dfrac{dP}{dt} = k_{\mathrm{o}}(1-P) - k_{\mathrm{c}}P$.
+* **Deterministic embedding:** the open fraction $`P`$ follows $`\dfrac{dP}{dt} = k_{\mathrm{o}}(1-P) - k_{\mathrm{c}}P`$.
 * **Stochastic embedding:** at each time step, the number of open channels changes by two binomial draws (closing of the open
-  channels with probability $k_{\mathrm{c}}\,dt$, opening of the closed channels with probability $k_{\mathrm{o}}\,dt$).
+  channels with probability $k_{\mathrm{c}}\,dt$, opening of the closed channels with probability $`k_{\mathrm{o}}\,dt`$).
 
-**Input.** The nucleotide ratio $a = \mathrm{ADP}/\mathrm{ATP}$ is fixed in each simulation, with
-$\mathrm{ATP} = \mathrm{Tot}/(1+a)$, $\mathrm{ADP} = \mathrm{Tot}\,a/(1+a)$ and $\mathrm{Tot} = 5$ mM (assumed). To compare
+**Input.** The nucleotide ratio $`a = \mathrm{ADP}/\mathrm{ATP}`$ is fixed in each simulation, with
+$`\mathrm{ATP} = \mathrm{Tot}/(1+a)`$, $`\mathrm{ADP} = \mathrm{Tot}\,a/(1+a)`$ and $`\mathrm{Tot} = 5`$ mM (assumed). To compare
 with the original model, we take its conductance to be proportional to $a$ and equal to the file value at $a = 0.5$:
 
 $$
@@ -53,15 +53,15 @@ g_{\mathrm{KATP}}(a) = 0.015\ \mathrm{nS/pF} \times \frac{a}{0.5}.
 $$
 
 **Calibration.** Two numbers come from data (Proks et al., 2004): the closed/open equilibrium without ligands, from the
-open probability without ligands $P_{\mathrm{O,zero}} = 0.53$,
+open probability without ligands $`P_{\mathrm{O,zero}} = 0.53`$,
 
 $$
 L = \frac{1 - P_{\mathrm{O,zero}}}{P_{\mathrm{O,zero}}} = 0.89,
 $$
 
-and the ATP concentration that halves the open probability in an excised patch (ADP = 0), $\mathrm{IC}_{50} = 7$ µM.
-$K_{\mathrm{C}}$ and $K_{\mathrm{O}}$ are not measured separately, so they are fitted with two conditions. First, the scheme must
-give the patch $\mathrm{IC}_{50}$ above. Second, in the cell, the total conductance must follow the reference line for
+and the ATP concentration that halves the open probability in an excised patch (ADP = 0), $`\mathrm{IC}_{50} = 7`$ µM.
+$`K_{\mathrm{C}}`$ and $`K_{\mathrm{O}}`$ are not measured separately, so they are fitted with two conditions. First, the scheme must
+give the patch $`\mathrm{IC}_{50}`$ above. Second, in the cell, the total conductance must follow the reference line for
 nucleotide ratios between 0.40 and 0.90:
 
 $$
@@ -74,17 +74,17 @@ $$
 K_{\mathrm{C}} = 20.0\ \mu\mathrm{M}, \qquad K_{\mathrm{O}} = 382\ \mu\mathrm{M},
 $$
 
-with a patch $\mathrm{IC}_{50}$ of 7.1 µM and $P_{\mathrm{O}}$ within 12 % of the reference line. The scheme is a bit less steep
-than the original model; its elasticity at $a = 0.5$ is
+with a patch $`\mathrm{IC}_{50}`$ of 7.1 µM and $`P_{\mathrm{O}}`$ within 12 % of the reference line. The scheme is a bit less steep
+than the original model; its elasticity at $`a = 0.5`$ is
 
 $$
 \frac{d\ln P_{\mathrm{O}}}{d\ln a} = 0.76 ,
 $$
 
-against 1 for the original model. We also tried fitting $K_{\mathrm{D}}$ too. It follows the line more closely but needs
-$K_{\mathrm{D}} = 3.8$ µM, which is lower than usual values for MgADP, so we did not use it.
+against 1 for the original model. We also tried fitting $`K_{\mathrm{D}}`$ too. It follows the line more closely but needs
+$`K_{\mathrm{D}} = 3.8`$ µM, which is lower than usual values for MgADP, so we did not use it.
 
-**Perturbations.** R201H-like: $K_{\mathrm{C}}$ and $K_{\mathrm{O}}$ multiplied by 298/7 (Proks et al., 2004). Q52R-like: $L$ divided
+**Perturbations.** R201H-like: $`K_{\mathrm{C}}`$ and $`K_{\mathrm{O}}`$ multiplied by 298/7 (Proks et al., 2004). Q52R-like: $L$ divided
 by 4. PIP₂ depletion: $L$ multiplied by 4. Sulfonylurea: 90 % of the channels unavailable. The last three are assumptions.
 
 ## What is in the repository
